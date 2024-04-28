@@ -1,8 +1,32 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+body, html {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Arial', sans-serif;
 }
 
-a {
-  color: #00B7FF;
+body {
+  background: linear-gradient(to left, #232526, #414345); /* A dark gradient from right to left */
+}
+
+.btn-outline-light {
+  border-color: #fff;
+  color: #fff;
+}
+
+.btn-outline-light:hover {
+  background-color: #fff;
+  color: #000;
+}
+
+/* Image adjustment */
+.img-fluid {
+  max-height: 70%; /* Adjust the image size as needed */
+  object-fit: cover;
+}
+
+@media (min-width: 768px) {
+  .bg-black {
+    background-color: transparent; /* Changed to transparent to blend with the dark gradient */
+  }
 }

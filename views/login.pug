@@ -3,23 +3,61 @@ html
   head
     title Login
     link(rel='stylesheet', href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css')
-  body
-    .container.mt-5
-      h1.text-center Login
-      if errors
-        .alert.alert-danger
-          each error in errors
-            div= error.msg
-      form(method='POST', action='/login', class='needs-validation', novalidate)
-        .form-group
-          label(for='username') Username
-          input(type='text', name='username', required='true', placeholder='Username', class='form-control', autofocus)
-          div.invalid-feedback Please enter your username.
-        .form-group
-          label(for='password') Password
-          input(type='password', name='password', required='true', placeholder='Password', class='form-control')
-          div.invalid-feedback Please enter your password.
-        button(type='submit', class='btn btn-primary btn-block') Login
+    link(rel='preconnect', href='https://fonts.googleapis.com')
+    link(rel='preconnect', href='https://fonts.gstatic.com', crossorigin)
+    link(href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet")
+    style.
+      body {
+        background: linear-gradient(to right, #000, #6a5acd);
+      }
+      .card-custom {
+        background: #fff;
+        border: none;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        padding: 2rem;
+        border-radius: 15px;
+        max-width: 500px;
+        margin: auto;
+      }
+      .btn-custom {
+        background-image: linear-gradient(to right, #c94b4b, #4b134f);
+        color: white;
+        border-radius: 30px;
+        max-width: 300px;
+        display: block;
+        margin: 1rem auto; // Center the button
+      }
+      .btn-custom:hover {
+        background-image: linear-gradient(to right, #000, #6a5acd);
+        color: #fff;
+      }
+      .form-control {
+        border-radius: 10px;
+        border: 1px solid #ccc;
+      }
+      .roboto-regular {
+        font-family: "Roboto", sans-serif;
+        font-weight: 400;
+        font-style: normal;
+      }
+  body(class='min-vh-100 d-flex align-items-center justify-content-center')
+    .container
+      .card.card-custom
+        h1.text-center.roboto-regular Login
+        if errors
+          .alert.alert-danger
+            each error in errors
+              div= error.msg
+        form(method='POST', action='/login', class='needs-validation', novalidate)
+          .form-group
+            label(for='username') Username
+            input(type='text', name='username', required='true', placeholder='Username', class='form-control', autofocus)
+            div.invalid-feedback Please enter your username.
+          .form-group
+            label(for='password') Password
+            input(type='password', name='password', required='true', placeholder='Password', class='form-control')
+            div.invalid-feedback Please enter your password.
+          button(type='submit', class='btn btn-custom btn-block') Login
     script(src='https://code.jquery.com/jquery-3.3.1.slim.min.js')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js')
     script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js')

@@ -1,11 +1,59 @@
 doctype html
 html
   head
-    title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
-  body
-    h1 Welcome to BudgetBuddy
-    p Proud part of the ITMD 441 Final Project by Mitansh Chaudhari.
-    p Manage your budget effectively and efficiently.
-    a(href='/signup') Signup
-    a(href='/login') Login
+    title BudgetBuddy
+    link(rel='stylesheet', href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css')
+    link(rel='preconnect', href='https://fonts.googleapis.com')
+    link(rel='preconnect', href='https://fonts.gstatic.com', crossorigin)
+    link(href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&family=Roboto+Mono:ital@0;1&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet")
+    style.
+      .btn-custom {
+        border-radius: 30px; 
+        margin-right: 3rem; 
+        border: none; 
+        color: white;
+        padding: 10px 20px; 
+        width: 150px; 
+        text-align: center; 
+        display: inline-block; 
+        background-image: linear-gradient(to right, #c94b4b, #4b134f);
+      }
+      .btn-custom:last-child {
+        margin-right: 0;
+      }
+      .btn-custom:hover {
+        color: #fff; 
+        background-image: linear-gradient(to right, #000, #6a5acd);
+      }
+      .img-small {
+        max-height: 30%; 
+        margin-bottom: 1rem; 
+      }
+      .space-grotesk {
+        font-family: 'Space Grotesk', sans-serif; 
+        font-weight: 500; 
+      }
+      .noto-sans{
+        font-family: "Noto Sans JP", sans-serif;
+        font-optical-sizing: auto;
+        font-style: normal;
+      }
+      .roboto-mono{
+        font-family: "Roboto Mono", monospace;
+        font-optical-sizing: auto;
+        font-style: normal;
+      }
+  body(class='min-vh-100 d-flex', style='background: linear-gradient(to right, #000, #6a5acd);')
+    .container-fluid.h-100(style='padding-top: 15%;')
+      .row.justify-content-center.align-items-center.h-100
+        .col-md-6.offset-1
+          h1.text-white.font-weight-bold.mb-3.space-grotesk(style='font-size: 3rem;') BudgetBuddy 
+          p.text-white.lead.roboto-mono(style='font-size: 1.20rem; max-width: 600px;') Take control of your finances with BudgetBuddy, your go-to app for seamless budget management and financial insights. Our intuitive platform makes it easy to track expenses, set goals, and make informed decisions for a better financial future.
+          .d-flex.justify-content-start
+            a.btn.btn-custom.noto-sans(href='/signup') Sign Up
+            a.btn.btn-custom.noto-sans(href='/login') Login
+        .col-md-4
+          img(src='/images/file.png', alt='Decorative Image', style='max-width: 150%; max-height: 400px;')
+    script(src='https://code.jquery.com/jquery-3.3.1.slim.min.js')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js')
+    script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js')

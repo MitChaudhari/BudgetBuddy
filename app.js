@@ -10,6 +10,7 @@ var indexRouter = require('./routes/index'); // Landing page and potentially oth
 var authRouter = require('./routes/auth'); // Routes for login/signup
 var usersRouter = require('./routes/users'); // Routes for user-specific functionalities
 
+
 var app = express();
 
 // Database connection setup
@@ -39,6 +40,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Routes
 app.use('/', indexRouter); // Use index router for landing and welcome page
+app.use(authRouter); // Use auth router specifically for login and signup functionalities
 app.use(authRouter); // Use auth router specifically for login and signup functionalities
 app.use('/users', usersRouter); // Use users router for handling user-specific routes
 
