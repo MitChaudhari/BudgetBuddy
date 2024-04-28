@@ -1,0 +1,41 @@
+doctype html
+html
+  head
+    title Login
+    link(rel='stylesheet', href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css')
+  body
+    .container.mt-5
+      h1.text-center Login
+      if errors
+        .alert.alert-danger
+          each error in errors
+            div= error.msg
+      form(method='POST', action='/login', class='needs-validation', novalidate)
+        .form-group
+          label(for='username') Username
+          input(type='text', name='username', required='true', placeholder='Username', class='form-control', autofocus)
+          div.invalid-feedback Please enter your username.
+        .form-group
+          label(for='password') Password
+          input(type='password', name='password', required='true', placeholder='Password', class='form-control')
+          div.invalid-feedback Please enter your password.
+        button(type='submit', class='btn btn-primary btn-block') Login
+    script(src='https://code.jquery.com/jquery-3.3.1.slim.min.js')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js')
+    script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js')
+    script.
+      (function() {
+        'use strict';
+        window.addEventListener('load', function() {
+          var forms = document.getElementsByClassName('needs-validation');
+          var validation = Array.prototype.filter.call(forms, function(form) {
+            form.addEventListener('submit', function(event) {
+              if (form.checkValidity() === false) {
+                event.preventDefault();
+                event.stopPropagation();
+              }
+              form.classList.add('was-validated');
+            }, false);
+          });
+        }, false);
+      })();

@@ -5,14 +5,15 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+// Route Setup
+var indexRouter = require('./routes/index'); // Landing page and potentially other static pages
+var authRouter = require('./routes/auth'); // Routes for login/signup
+var usersRouter = require('./routes/users'); // Routes for user-specific functionalities
 
 var app = express();
 
 // Database connection setup
 const db = require('./database/db'); // Database connection setup file
-
 (async function connectDB() {
   try {
     await db.connect(); // Attempt to connect to MongoDB Atlas
@@ -22,6 +23,7 @@ const db = require('./database/db'); // Database connection setup file
     process.exit(1); // Exit if connection fails
   }
 })();
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -34,9 +36,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
 // Routes
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/', indexRouter); // Use index router for landing and welcome page
+app.use(authRouter); // Use auth router specifically for login and signup functionalities
+app.use('/users', usersRouter); // Use users router for handling user-specific routes
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
