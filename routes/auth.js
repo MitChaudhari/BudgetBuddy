@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const router = express.Router();
 const { body, validationResult } = require('express-validator');
@@ -5,14 +6,14 @@ const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 
 router.get('/signup', (req, res) => {
-  res.render('signup');  // No errors initially
+  res.render('signup');
 });
 
 router.get('/login', (req, res) => {
   res.render('login');
 });
 
-//Sign up Logic
+// Sign up Logic
 router.post('/signup', [
   body('firstName', 'First name is required').notEmpty(),
   body('lastName', 'Last name is required').notEmpty(),
@@ -39,14 +40,15 @@ router.post('/signup', [
     });
 
     await newUser.save();
-    res.redirect('/dashboard');
+    req.session.userId = newUser._id;  // Set user ID in session
+    res.redirect('/transactions');  // Redirect to transactions page after successful signup
   } catch (error) {
     console.error('Error during signup:', error);
     res.status(500).render('signup', { errors: [{ msg: 'Server error during signup' }] });
   }
 });
 
-// Login route to use username and password
+// Login Route
 router.post('/login', [
   body('username', 'Username is required').notEmpty(),
   body('password', 'Password is required').notEmpty()
@@ -68,7 +70,8 @@ router.post('/login', [
       return res.status(400).render('login', { errors: [{ msg: 'Invalid Credentials' }] });
     }
 
-    res.redirect('/dashboard');
+    req.session.userId = user._id;  // Set user ID in session
+    res.redirect('/transactions');  // Redirect to transactions page after successful login
   } catch (error) {
     console.error('Error during login:', error);
     res.status(500).render('login', { errors: [{ msg: 'Server error during login' }] });

@@ -1,30 +1,39 @@
 require('dotenv').config(); // Load environment variables from .env file
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const session = require('express-session');
+const MongoStore = require('connect-mongo');
 
 // Route Setup
-var indexRouter = require('./routes/index'); // Landing page and potentially other static pages
-var authRouter = require('./routes/auth'); // Routes for login/signup
-var usersRouter = require('./routes/users'); // Routes for user-specific functionalities
+const indexRouter = require('./routes/index');
+const authRouter = require('./routes/auth');
+const usersRouter = require('./routes/users');
+const transactionsRouter = require('./routes/transactions');
 
-
-var app = express();
+const app = express();
 
 // Database connection setup
-const db = require('./database/db'); // Database connection setup file
+const db = require('./database/db');
 (async function connectDB() {
   try {
     await db.connect(); // Attempt to connect to MongoDB Atlas
     console.log("Database connected successfully.");
   } catch (error) {
     console.error("Database connection failed:", error);
-    process.exit(1); // Exit if connection fails
+    process.exit(1);
   }
 })();
 
+// Session configuration
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  cookie: { maxAge: 24 * 60 * 60 * 1000 } // 24 hours
+}));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -37,25 +46,23 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-
 // Routes
 app.use('/', indexRouter); // Use index router for landing and welcome page
 app.use(authRouter); // Use auth router specifically for login and signup functionalities
-app.use(authRouter); // Use auth router specifically for login and signup functionalities
 app.use('/users', usersRouter); // Use users router for handling user-specific routes
+app.use('/transactions', transactionsRouter); // Use transactions router for handling transaction-related routes
 
-// catch 404 and forward to error handler
+// Catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
 });
 
-// error handler
+// Error handler
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
+  // Set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
+  // Render the error page
   res.status(err.status || 500);
   res.render('error');
 });
