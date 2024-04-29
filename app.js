@@ -1,4 +1,4 @@
-require('dotenv').config(); // Load environment variables from .env file
+require('dotenv').config(); 
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
@@ -49,9 +49,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Routes
-app.use('/', indexRouter); // Use index router for landing and welcome page
+app.use('/', indexRouter); 
 app.use(authRouter); // Use auth router specifically for login and signup functionalities
-app.use('/users', usersRouter); // Use users router for handling user-specific routes
+app.use('/users', usersRouter);
 app.use('/transactions', transactionsRouter); // Use transactions router for handling transaction-related routes
 app.use('/budget', budgetRouter);
 

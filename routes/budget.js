@@ -163,7 +163,7 @@ router.get('/logout', (req, res) => {
         if (err) {
             return res.redirect('/budget'); // Redirect to the budget page if logout fails
         }
-        res.clearCookie('connect.sid'); // Assuming 'connect.sid' is your session cookie's name
+        res.clearCookie('connect.sid');
         res.redirect('/'); // Redirect to home page after successful logout
     });
 });

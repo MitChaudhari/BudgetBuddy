@@ -6,15 +6,38 @@ html
     script(src="https://code.jquery.com/jquery-3.5.1.min.js")
     script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js')
     script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js')
-  
+
     style.
       .button-spacing {
         margin-right: 8px;
         font-size: 15px
-        
+      }
+      .navbar {
+        background: linear-gradient(to right, #000, #6a5acd);
+        font-size: 18px; 
+        font-weight: bold; /* Bold font */
+        color: white; /* White text color */
+      }
+      .navbar-light .navbar-nav .nav-link {
+        color: white; 
+      }
+      .navbar-light .navbar-brand {
+        color: white; 
       }
 
   body
+    nav.navbar.navbar-expand-lg.navbar-light
+      .container
+        a.navbar-brand(href='/') BudgetBuddy
+        button.navbar-toggler(type='button' data-bs-toggle='collapse' data-bs-target='#navbarNavAltMarkup' aria-controls='navbarNavAltMarkup' aria-expanded='false' aria-label='Toggle navigation')
+          span.navbar-toggler-icon
+        #navbarNavAltMarkup.collapse.navbar-collapse
+          ul.navbar-nav.ml-auto
+            li.nav-item
+              a.nav-link(href='/budget') View Budget
+            li.nav-item
+              a.nav-link(href='transactions/logout') Logout
+
     .container.mt-5
       h1.text-center Expense Tracker
       a(href="/transactions/add" class="btn btn-success mb-3") Add Expense
@@ -58,7 +81,7 @@ html
               td $#{transaction.amount.toFixed(2)}
               td
                 button.btn.btn-info.btn-sm.view-button(data-transaction-id=transaction._id, class="button-spacing") View
-                a.btn.btn-primary.btn-sm(href="/transactions/" + transaction._id + "/edit", class="button-spacing") Edit
+                a.btn.btn-primary.btn-sm(href="/transactions/" + transaction._id + "/edit" class="button-spacing") Edit
                 button.btn.btn-danger.btn-sm.delete-button(data-transaction-id=transaction._id, class="button-spacing") Delete
 
 

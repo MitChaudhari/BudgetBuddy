@@ -148,6 +148,15 @@ router.post('/:id/delete', isAuthenticated, async (req, res) => {
   }
 });
 
-
+// Logout route
+router.get('/logout', (req, res) => {
+  req.session.destroy(err => {
+      if (err) {
+          return res.redirect('/transactions'); // Redirect to the budget page if logout fails
+      }
+      res.clearCookie('connect.sid');
+      res.redirect('/'); // Redirect to home page after successful logout
+  });
+});
 
 module.exports = router;

@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const User = require('./User'); // Ensure the User model is imported to create references
+const User = require('./User'); 
 
 // Create a new schema for the budget data
 const budgetSchema = new mongoose.Schema({
