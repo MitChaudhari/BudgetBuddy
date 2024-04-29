@@ -13,20 +13,27 @@ html
       a(href="/transactions/add", class="btn btn-success mb-3") Add Expense
 
       // Filter form
-      form(method='GET', action='/transactions')
-        .form-row
-          .form-group.col-md-4
+      form(method='GET', action='/transactions', class='mb-3')
+        .form-row.d-flex.align-items-end
+          .form-group.col-md-5
             label(for='category') Category
-            select(name='category', class='form-control')
+            select#category.form-control(name='category')
               option(value='') Select category
               option(value='groceries') Groceries
-          .form-group.col-md-4
+              option(value='utilities') Utilities
+              option(value='entertainment') Entertainment
+              option(value='dining_out') Dining Out
+              option(value='transportation') Transportation
+              option(value='health_care') Health Care
+              option(value='education') Education
+              option(value='personal_care') Personal Care
+              option(value='savings') Savings
+              option(value='miscellaneous') Miscellaneous
+          .form-group.col-md-5
             label(for='date') Date
-            input(type='date', name='date', class='form-control')
-          .form-group.col-md-4
-            label(for='amount') Amount
-            input(type='number', name='amount', class='form-control')
-        button(type='submit', class='btn btn-primary') Filter
+            input#date.form-control(type='date', name='date')
+          .col-md-2.d-flex.align-items-center
+            button.btn.btn-primary(type='submit') Filter
 
       // Transaction table
       table.table.table-striped
@@ -43,6 +50,36 @@ html
               td= transaction.category
               td= transaction.amount
               td
-                button.btn.btn-info.btn-sm View
-                button.btn.btn-primary.btn-sm Edit
+                button.btn.btn-info.btn-sm.view-button(data-transaction-id=transaction._id) View
+                a.btn.btn-primary.btn-sm(href="/transactions/" + transaction._id + "/edit") Edit
                 button.btn.btn-danger.btn-sm Delete
+
+      // View Transaction Modal
+      #viewTransactionModal.modal.fade(tabindex='-1', role='dialog')
+        .modal-dialog
+          .modal-content
+            .modal-header
+              h5.modal-title View Transaction
+              button.close(data-dismiss='modal', aria-label='Close')
+                span(aria-hidden='true') ×
+            .modal-body
+              p#transactionDate
+              p#transactionCategory
+              p#transactionAmount
+              p#transactionDescription
+            .modal-footer
+              button.btn.btn-secondary(type='button', data-dismiss='modal') Close
+
+    script.
+      $(document).on('click', '.view-button', function() {
+        const transactionId = $(this).data('transaction-id');
+        $.get(`/transactions/${transactionId}/view`, function(data) {
+          $('#transactionDate').text('Date: ' + new Date(data.date).toLocaleDateString());
+          $('#transactionCategory').text('Category: ' + data.category);
+          $('#transactionAmount').text('Amount: $' + data.amount.toFixed(2));
+          $('#transactionDescription').text('Description: ' + data.description);
+          $('#viewTransactionModal').modal('show');
+        }).fail(function() {
+          alert('Transaction not found.');
+        });
+      });
