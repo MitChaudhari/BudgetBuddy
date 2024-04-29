@@ -32,17 +32,21 @@ To get the project up and running, follow these steps:
    ```
    cd BudgetBuddy
    ```
-3. Install dependencies:
+3. Make sure to get the `.env` file from the blackboard.
+
+4. Install dependencies:
    ```
    npm install
    ```
-4. Start the application in development mode:
+5. Start the application in development mode:
    ```
    npm run dev
    ```
-5. Access the application by navigating to [http://localhost:3000/](http://localhost:3000/) in your web browser.
+6. Access the application by navigating to [http://localhost:3000/](http://localhost:3000/) in your web browser.
 
-6. Make sure to get the `.env` file from the blackboard.
+7. For testing purposes and you can use the following login credentials: `username:` mit and `password:` 123456 
+
+8. Follow the on page directions and check out the different pages. Feel free to test out with creating a new account. 
 
 ## Insights and Results
 The development of BudgetBuddy provided key insights into handling data visualization and user authentication in web applications. A significant challenge was incorporating a dynamic pie chart into PDF reports, which could not be achieved due to static rendering limitations with `puppeteer`. Future improvements will explore server-side image rendering or alternative libraries to resolve this.
