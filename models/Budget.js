@@ -9,12 +9,8 @@ const budgetSchema = new mongoose.Schema({
     ref: 'User',
     required: [true, "User ID is required"]  // Ensures every budget is linked to a user
   },
-  // Category of the budget, required and should align with transaction categories
-  category: {
-    type: String,
-    required: [true, "Category is required"]
-  },
-  // Monetary limit for the budget category
+
+  // Monetary limit for the month or year
   limit: {
     type: Number,
     required: [true, "Budget limit is required"]

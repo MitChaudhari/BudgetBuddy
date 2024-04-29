@@ -1,0 +1,92 @@
+const express = require('express');
+const router = express.Router();
+const Budget = require('../models/Budget');
+const Transaction = require('../models/Transaction');
+const User = require('../models/User'); 
+
+// Middleware to check if user is authenticated
+function isAuthenticated(req, res, next) {
+    if (req.session && req.session.userId) {
+        return next();
+    }
+    return res.status(401).send('Unauthorized');
+}
+
+// Display Budget page
+router.get('/', isAuthenticated, async (req, res) => {
+    try {
+        const user = await User.findById(req.session.userId);
+        if (!user) {
+            return res.status(404).send('User not found');
+        }
+
+        const budget = await Budget.findOne({ userId: req.session.userId });
+        const transactions = await Transaction.find({ userId: req.session.userId });
+
+        // Define category mappings to standardize category names
+        const categoryMapping = {
+            groceries: 'Groceries',
+            utilities: 'Utilities',
+            entertainment: 'Entertainment',
+            dining_out: 'Dining Out',
+            transportation: 'Transportation',
+            health_care: 'Health Care',
+            education: 'Education',
+            personal_care: 'Personal Care',
+            savings: 'Savings',
+            miscellaneous: 'Miscellaneous'
+        };
+
+        // Initialize category spending map with readable labels
+        let spendingByCategory = Object.keys(categoryMapping).reduce((acc, key) => {
+            acc[categoryMapping[key]] = 0;  // Initialize each category to zero using the mapped names
+            return acc;
+        }, {});
+
+        // Aggregate spending by category, using mapped names
+        transactions.forEach(transaction => {
+            const categoryLabel = categoryMapping[transaction.category.trim()];
+            if (categoryLabel) {  // Ensure the category is valid and mapped
+                spendingByCategory[categoryLabel] += transaction.amount;
+            }
+        });
+
+        const totalSpent = transactions.reduce((acc, transaction) => acc + transaction.amount, 0);
+        let remaining = budget ? budget.limit - totalSpent : 0;
+
+        // Render the budget page with the necessary data
+        res.render('budget', {
+            user,
+            budget,
+            totalSpent,
+            remaining,
+            spendingByCategory: JSON.stringify(spendingByCategory) // Pass the aggregated data as a JSON string for use in charts
+        });
+    } catch (error) {
+        console.error('Failed to retrieve budget or user data:', error);
+        res.status(500).send('Server error');
+    }
+});
+
+// Handle Budget creation/update
+router.post('/', isAuthenticated, async (req, res) => {
+    const { limit, period } = req.body;
+    try {
+        let budget = await Budget.findOne({ userId: req.session.userId });
+        if (budget) {
+            // Update existing budget
+            budget.limit = limit;
+            budget.period = period;
+            await budget.save();
+        } else {
+            // Create new budget
+            budget = new Budget({ userId: req.session.userId, limit, period });
+            await budget.save();
+        }
+        res.redirect('/budget');
+    } catch (error) {
+        res.status(500).render('budget', { error: 'Failed to save budget', form: req.body });
+    }
+});
+
+module.exports = router;
