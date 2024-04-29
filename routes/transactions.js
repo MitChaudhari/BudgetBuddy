@@ -134,16 +134,20 @@ router.post('/:id/edit', isAuthenticated, [
   }
 });
 
-
-
-// Delete Transaction Confirmation
+// Delete Transaction
 router.post('/:id/delete', isAuthenticated, async (req, res) => {
   try {
-    await Transaction.findByIdAndRemove(req.params.id);
+    const result = await Transaction.deleteOne({ _id: req.params.id });
+    if (result.deletedCount === 0) {
+      return res.status(404).send('Transaction not found');
+    }
     res.redirect('/transactions'); // Redirect to the transactions list after deletion
   } catch (error) {
-    res.status(500).send('Server error');
+    console.error('Delete transaction error:', error);
+    res.status(500).send('Server error: ' + error.message);
   }
 });
+
+
 
 module.exports = router;

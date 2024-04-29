@@ -48,7 +48,7 @@ html
         form(method='POST', action='/transactions/' + transaction._id + '/edit')
           .form-group
             label(for='amount') Amount
-            input#amount.form-control(type='number', name='amount', required=true, value=transaction.amount)
+            input#amount.form-control(type='number', name='amount', required=true, step='0.01', placeholder='Enter amount')
 
           .form-group
             label(for='category') Category

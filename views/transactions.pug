@@ -2,18 +2,25 @@ doctype html
 html
   head
     title Expense Tracker
-    link(rel='stylesheet', href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css')
+    link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css')
     script(src="https://code.jquery.com/jquery-3.5.1.min.js")
     script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js')
     script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js')
+  
+    style.
+      .button-spacing {
+        margin-right: 8px;
+        font-size: 15px
+        
+      }
 
   body
     .container.mt-5
       h1.text-center Expense Tracker
-      a(href="/transactions/add", class="btn btn-success mb-3") Add Expense
+      a(href="/transactions/add" class="btn btn-success mb-3") Add Expense
 
       // Filter form
-      form(method='GET', action='/transactions', class='mb-3')
+      form(method='GET' action='/transactions' class='mb-3')
         .form-row.d-flex.align-items-end
           .form-group.col-md-5
             label(for='category') Category
@@ -31,7 +38,7 @@ html
               option(value='miscellaneous') Miscellaneous
           .form-group.col-md-5
             label(for='date') Date
-            input#date.form-control(type='date', name='date')
+            input#date.form-control(type='date' name='date')
           .col-md-2.d-flex.align-items-center
             button.btn.btn-primary(type='submit') Filter
 
@@ -48,38 +55,71 @@ html
             tr
               td= transaction.date.toLocaleDateString()
               td= transaction.category
-              td= transaction.amount
+              td $#{transaction.amount.toFixed(2)}
               td
-                button.btn.btn-info.btn-sm.view-button(data-transaction-id=transaction._id) View
-                a.btn.btn-primary.btn-sm(href="/transactions/" + transaction._id + "/edit") Edit
-                button.btn.btn-danger.btn-sm Delete
+                button.btn.btn-info.btn-sm.view-button(data-transaction-id=transaction._id, class="button-spacing") View
+                a.btn.btn-primary.btn-sm(href="/transactions/" + transaction._id + "/edit", class="button-spacing") Edit
+                button.btn.btn-danger.btn-sm.delete-button(data-transaction-id=transaction._id, class="button-spacing") Delete
 
-      // View Transaction Modal
-      #viewTransactionModal.modal.fade(tabindex='-1', role='dialog')
+
+      #viewTransactionModal.modal.fade(tabindex='-1' role='dialog')
         .modal-dialog
           .modal-content
             .modal-header
               h5.modal-title View Transaction
-              button.close(data-dismiss='modal', aria-label='Close')
-                span(aria-hidden='true') ×
+              button.close(data-dismiss='modal' aria-label='Close')
+              span(aria-hidden='true') ×
             .modal-body
               p#transactionDate
               p#transactionCategory
               p#transactionAmount
               p#transactionDescription
             .modal-footer
-              button.btn.btn-secondary(type='button', data-dismiss='modal') Close
+              button.btn.btn-secondary(type='button' data-dismiss='modal') Close
+
+      #deleteTransactionModal.modal.fade(tabindex='-1' role='dialog')
+        .modal-dialog
+          .modal-content
+            .modal-header
+              h5.modal-title Are you sure you want to delete this transaction?
+              button.close(data-dismiss='modal' aria-label='Close')
+              span(aria-hidden='true') ×
+            .modal-body
+              p Are you sure you want to permanently delete this transaction?
+            .modal-footer
+              button.btn.btn-danger(type='button' onclick='confirmDelete()') Delete
+              button.btn.btn-secondary(type='button' data-dismiss='modal') Close
 
     script.
       $(document).on('click', '.view-button', function() {
         const transactionId = $(this).data('transaction-id');
         $.get(`/transactions/${transactionId}/view`, function(data) {
-          $('#transactionDate').text('Date: ' + new Date(data.date).toLocaleDateString());
-          $('#transactionCategory').text('Category: ' + data.category);
-          $('#transactionAmount').text('Amount: $' + data.amount.toFixed(2));
-          $('#transactionDescription').text('Description: ' + data.description);
-          $('#viewTransactionModal').modal('show');
+        $('#transactionDate').text('Date: ' + new Date(data.date).toLocaleDateString());
+        $('#transactionCategory').text('Category: ' + data.category);
+        $('#transactionAmount').text('Amount: $' + data.amount.toFixed(2));
+        $('#transactionDescription').text('Description: ' + data.description);
+        $('#viewTransactionModal').modal('show');
         }).fail(function() {
-          alert('Transaction not found.');
+        alert('Transaction not found.');
         });
       });
+
+      $(document).on('click', '.delete-button', function() {
+        const transactionId = $(this).data('transaction-id');
+        $('#deleteTransactionModal').modal('show');
+
+        window.confirmDelete = function() {
+          $.ajax({
+            url: `/transactions/${transactionId}/delete`,
+            type: 'POST',
+            success: function() {
+              window.location.reload();
+            },
+            error: function(xhr, status, error) {
+              console.error('Error deleting transaction:', xhr.responseText);
+              alert('Error deleting transaction: ' + xhr.responseText);
+            }
+          });
+        };
+      });
+

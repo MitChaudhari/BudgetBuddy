@@ -12,6 +12,8 @@ const indexRouter = require('./routes/index');
 const authRouter = require('./routes/auth');
 const usersRouter = require('./routes/users');
 const transactionsRouter = require('./routes/transactions');
+const budgetRouter = require('./routes/budget');
+
 
 const app = express();
 
@@ -51,6 +53,8 @@ app.use('/', indexRouter); // Use index router for landing and welcome page
 app.use(authRouter); // Use auth router specifically for login and signup functionalities
 app.use('/users', usersRouter); // Use users router for handling user-specific routes
 app.use('/transactions', transactionsRouter); // Use transactions router for handling transaction-related routes
+app.use('/budget', budgetRouter);
+
 
 // Catch 404 and forward to error handler
 app.use(function(req, res, next) {
