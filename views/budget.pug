@@ -8,24 +8,79 @@ html
         link(href='https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap' rel='stylesheet')
         script(src='https://cdn.jsdelivr.net/npm/chart.js')
         style.
-            body { font-family: 'Roboto', sans-serif; background: linear-gradient(to right, #000, #6a5acd); padding-top: 20px; }
-            .card-custom { background: #ffffff; border-radius: 8px; box-shadow: 0 2px 3px rgba(0,0,0,0.1); padding: 20px; margin-bottom: 20px; }
-            .highlight { color: #007bff; }
-            .header { margin-bottom: 30px; }
-            .sub-header { margin-top: 20px; margin-bottom: 10px; }
-            #pieChart { height: 400px; width: 100%; }
+            body { 
+                font-family: 'Roboto', sans-serif; 
+                background: linear-gradient(to right, #000, #6a5acd); 
+                padding-top: 20px; 
+            }
+            .card-custom { 
+                background: #ffffff; 
+                border-radius: 10px; 
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+                padding: 25px; 
+                margin-bottom: 30px; 
+                text-align: center;
+            }
+            .highlight { 
+                color: #007bff; 
+            }
+            .header { 
+                margin-bottom: 40px; 
+                text-align: center; 
+            }
+            .sub-header { 
+                margin-top: 25px; 
+                margin-bottom: 15px; 
+                font-weight: bold;
+            }
+            .form-group label {
+                font-weight: bold;
+                color: #333;
+            }
+            .form-group input, 
+            .form-group select {
+                padding: 10px;
+                border-radius: 5px;
+                border: 1px solid #ccc;
+            }
+            .btn-primary {
+                background-color: #6a5acd; 
+                border-color: #6a5acd; 
+                padding: 10px 20px; 
+                font-weight: bold; 
+                transition: background-color 0.3s ease;
+            }
+            .btn-primary:hover {
+                background-color: #483d8b;
+            }
+            #pieChart { 
+                height: 400px; 
+                width: 100%; 
+                margin-top: 30px;
+            }
+            .report-download h4 {
+                font-weight: bold;
+                margin-bottom: 15px;
+            }
+            .report-download a {
+                padding: 10px 20px;
+            }
             /* Additional styles for navbar */
             .navbar {
                 background: linear-gradient(to right, #000, #6a5acd);
-                font-size: 18px; /* Increased font size */
-                font-weight: bold; /* Bold font */
-                color: white; /* White text color */
+                font-size: 18px; 
+                font-weight: bold; 
+                color: white; 
             }
             .navbar-light .navbar-nav .nav-link {
-                color: white; /* Ensuring nav links are white */
+                color: white; 
             }
             .navbar-light .navbar-brand {
-                color: white; /* Ensuring the brand is also white */
+                color: white; 
+            }
+            .budget-value {
+                color: red;
+                text-decoration: underline;
             }
     body
         nav.navbar.navbar-expand-lg.navbar-light
@@ -50,9 +105,9 @@ html
 
                         if budget
                             .sub-header
-                                h3 Your current budget limit is $#{budget.limit.toFixed(2)} for #{budget.period}
-                                h3 You have spent $#{totalSpent.toFixed(2)} so far.
-                                h3 You have $#{remaining.toFixed(2)} remaining in your budget.
+                                h3 Your current budget limit is <span class="budget-value">$#{budget.limit.toFixed(2)}</span> for #{budget.period}
+                                h3 You have spent <span class="budget-value">$#{totalSpent.toFixed(2)}</span> so far.
+                                h3 You have <span class="budget-value">$#{remaining.toFixed(2)}</span> remaining in your budget.
                         else
                             .sub-header
                                 h3 No budget set. Please define your budget.
@@ -111,4 +166,3 @@ html
                 }
             });
         });
-
